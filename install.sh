@@ -79,7 +79,8 @@ cd c_fitxers
 gcc hont.c -o "$DESTI/hont"
 gcc mcd.c -o "$DESTI/mcd"
 gcc mitjana.c -o "$DESTI/mitjana"
+gcc str_replace.c -o "$DESTI/str_replace"
 cd $DESTI
-chown root:staff hont mcd mitjana
-chmod 755 hont mcd mitjana
+chown root:staff hont mcd mitjana str_replace
+chmod 755 hont mcd mitjana str_replace
 cd $PWD

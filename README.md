@@ -11,6 +11,7 @@ anuaris | anuari_escolar.sh | Generete a calendar from september to august
 c_fitxers | hont.c | Simple C program to calculate D'Hondt method
 c_fitxers | mcd.c | Calculate the greatest common divisor of two integers given from the shell
 c_fitxers | mitjana.c | Calculate the mean of two or more numbers given from the shell
+c_fitxers | str_replace.c | C implementation of str_replace PHP function
 crear | crear.sh | Create new files with comments
 filmaffinity | filmaffinity.py | Extract film information from filmaffinity
 genmake | genmake.sh | Very simple generator of Makefiles for C/C++ and LaTeX
