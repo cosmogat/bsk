@@ -17,7 +17,7 @@ filmaffinity | filmaffinity.py | Extract film information from filmaffinity
 genmake | genmake.sh | Very simple generator of Makefiles for C/C++ and LaTeX
 imprimirCodi | imprimirCodi.sh | Generate pdf from source code files
 informacio | informacio.sh | Shell command for information in Debian GNU/Linux
-latex_print | latex_print.sh | Shell command for generate empyt latex tables
+latex_print | latex_print.sh | Shell command for generate empty latex tables
 orgMusica | orgMusica.sh | Organize audio files in folders using their tags
 reanomenarJPG | reanomenarJPG.sh | Rename jpg files using their dates 
 ## Getting Started
