@@ -23,7 +23,11 @@ function matriu {
 	for j in $(seq 2 $COL) ; do
 	    echo -ne "&$i-$j "
 	done
-	echo -ne "\\\\\ \n"	
+	if [ $i -ne $FIL ] ; then
+	    echo -ne "\\\\\ "
+	fi
+	echo -ne "\n"
+
     done
 }
 
