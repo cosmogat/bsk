@@ -20,6 +20,7 @@ informacio | informacio.sh | Shell command for information in Debian GNU/Linux
 latex_print | latex_print.sh | Shell command for generate empty latex tables
 orgMusica | orgMusica.sh | Organize audio files in folders using their tags
 reanomenarJPG | reanomenarJPG.sh | Rename jpg files using their dates 
+canvi_nom | canvi_nom.sh | Rename multiple files
 ## Getting Started
 For this kit you need some packages. These packages can be install in GNU/Linux Debian 9.0 with the next command in a root enviroment:
 ```
