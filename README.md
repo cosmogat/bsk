@@ -8,6 +8,7 @@ Folder | Filename | Function
 --- | --- | ---
 anuaris | anuari.sh | Generate a calendar for one given year
 anuaris | anuari_escolar.sh | Generete a calendar from september to august
+canvi_nom | canvi_nom.sh | Rename multiple files
 c_fitxers | hont.c | Simple C program to calculate D'Hondt method
 c_fitxers | mcd.c | Calculate the greatest common divisor of two integers given from the shell
 c_fitxers | mitjana.c | Calculate the mean of two or more numbers given from the shell
@@ -20,7 +21,6 @@ informacio | informacio.sh | Shell command for information in Debian GNU/Linux
 latex_print | latex_print.sh | Shell command for generate empty latex tables
 orgMusica | orgMusica.sh | Organize audio files in folders using their tags
 reanomenarJPG | reanomenarJPG.sh | Rename jpg files using their dates 
-canvi_nom | canvi_nom.sh | Rename multiple files
 ## Getting Started
 For this kit you need some packages. These packages can be install in GNU/Linux Debian 9.0 with the next command in a root enviroment:
 ```
