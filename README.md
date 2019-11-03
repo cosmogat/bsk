@@ -7,7 +7,6 @@ In the next table you can see a simple explanation for these scripts and program
 Folder | Filename | Function
 --- | --- | ---
 anuaris | anuari.sh | Generate a calendar for one given year
-anuaris | anuari_escolar.sh | Generete a calendar from september to august
 canvi_nom | canvi_nom.sh | Rename multiple files
 c_fitxers | hont.c | Simple C program to calculate D'Hondt method
 c_fitxers | mcd.c | Calculate the greatest common divisor of two integers given from the shell
