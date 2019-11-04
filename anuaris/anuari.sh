@@ -160,7 +160,9 @@ function color_festa {
     elif [ $mm -eq $mpi ] && [ $mpi -ne $mpf ] && [ $dd -ge $dpi ] ; then
 	ret=" \cellcolor{fes2} "
     elif [ $mm -eq $mpf ] && [ $mpi -ne $mpf ] && [ $dd -le $dpf ] ; then
-	ret=" \cellcolor{fes2} "	    
+	ret=" \cellcolor{fes2} "
+    else
+	ret=" \cellcolor{blanc} "
     fi
     echo $ret
 }
@@ -180,23 +182,26 @@ function comprovacions {
     fi
     COLOR=$(echo $PARAMS | grep "-" | grep "c" | wc -l)
     ESCOL=$(echo $PARAMS | grep "-" | grep "s" | wc -l)
+    BACKG=$(echo $PARAMS | grep "-" | grep "b" | wc -l)
     if ! [[ $ANY =~ $es_num ]] || [ $ANY -le 0 ] || [ $ANY -ge 9999 ] ; then
 	ANY=0
 	EIXIDA=1
     fi
-    echo "$EIXIDA-$COLOR-$ESCOL-$ANY"
+    echo "$EIXIDA-$COLOR-$ESCOL-$BACKG-$ANY"
     }
 
 cadena=$(comprovacions $@)
 EIXIDA=$(echo $cadena | cut -d'-' -f 1)
 CCOLOR=$(echo $cadena | cut -d'-' -f 2)
 CESCOL=$(echo $cadena | cut -d'-' -f 3)
-ANY=$(echo $cadena | cut -d'-' -f 4)
+CBACKG=$(echo $cadena | cut -d'-' -f 4)
+ANY=$(echo $cadena | cut -d'-' -f 5)
 if [ $EIXIDA -eq 1 ] ; then
     nom=$(basename $0)
     echo "Utilitzeu: $nom [-cs] ANY" >&2
     echo "On l'opció -c és per pintar els festius" >&2
     echo "On l'opció -s és per fer anuari escolar" >&2
+    echo "On l'opció -b és per pintar colors de fons" >&2
     echo "On ANY és un any comprès entre 1 i 9999" >&2
     echo "És necessari tindre pdflatex i les llibreries bàsiques de latex" >&2
     exit 1    
@@ -222,7 +227,8 @@ SEQ=$(seq 1 12)
 if [ $CESCOL -eq 1 ] ; then
     SEQ=$(seq 9 12; seq 1 8)
 fi
-
+FB=" \cellcolor{blanc} "
+MESOS=("" "Gener" "Febrer" "Març" "Abril" "Maig" "Juny" "Juliol" "Agost" "Setembre" "Octubre" "Novembre" "Desembre")
 echo -ne "Preparant el calendari"
 LATEX="anuari$$.tex"
 touch $LATEX
@@ -241,17 +247,34 @@ echo "\usepackage[T1]{fontenc}" >> $LATEX
 echo "\usepackage{times}" >> $LATEX
 echo "\usepackage{listings}" >> $LATEX
 echo "\usepackage{wasysym}" >> $LATEX
-echo "\marginsize{1.5cm}{1.5cm}{1.5cm}{1.5cm}" >> $LATEX
+echo "\marginsize{0.0cm}{0.0cm}{0.0cm}{0.0cm}" >> $LATEX
 echo "\definecolor{roig}{rgb}{0.94,0.66,0.66}" >> $LATEX
 echo "\definecolor{verd}{rgb}{0.66,0.94,0.66}" >> $LATEX
 echo "\definecolor{lila}{rgb}{0.66,0.66,0.94}" >> $LATEX
 echo "\definecolor{groc}{rgb}{0.94,0.94,0.66}" >> $LATEX
 echo "\definecolor{rosa}{rgb}{0.94,0.66,0.94}" >> $LATEX
 echo "\definecolor{blau}{rgb}{0.65,0.86,0.96}" >> $LATEX
+echo "\definecolor{blanc}{rgb}{1.00,1.00,1.00}" >> $LATEX
+echo "\definecolor{col00}{rgb}{0.88,0.88,0.88}" >> $LATEX
+echo "\definecolor{col01}{rgb}{0.58,0.82,0.98}" >> $LATEX
+echo "\definecolor{col02}{rgb}{0.59,0.86,0.98}" >> $LATEX
+echo "\definecolor{col03}{rgb}{0.65,0.91,0.90}" >> $LATEX
+echo "\definecolor{col04}{rgb}{0.72,0.88,0.69}" >> $LATEX
+echo "\definecolor{col05}{rgb}{0.82,0.91,0.66}" >> $LATEX
+echo "\definecolor{col06}{rgb}{0.99,0.96,0.58}" >> $LATEX
+echo "\definecolor{col07}{rgb}{0.99,0.89,0.57}" >> $LATEX
+echo "\definecolor{col08}{rgb}{0.98,0.78,0.58}" >> $LATEX
+echo "\definecolor{col09}{rgb}{0.97,0.60,0.61}" >> $LATEX
+echo "\definecolor{col10}{rgb}{0.93,0.64,0.81}" >> $LATEX
+echo "\definecolor{col11}{rgb}{0.75,0.70,0.87}" >> $LATEX
+echo "\definecolor{col12}{rgb}{0.66,0.75,0.91}" >> $LATEX
 echo "\colorlet{fes1}{roig}" >> $LATEX
 echo "\colorlet{fes2}{groc}" >> $LATEX
 echo "\colorlet{fes3}{blau}" >> $LATEX
 echo "\begin{document}" >> $LATEX
+if [ $CBACKG -eq 1 ] ; then
+    echo "\pagecolor{col00}" >> $LATEX  
+fi
 echo "\begin{center}" >> $LATEX
 if [ $CESCOL -eq 0 ] ; then
     echo "{\Huge \bf ANUARI $ANY}" >> $LATEX
@@ -300,52 +323,18 @@ for j in $SEQ ; do
 	    INI_NUM=6
 	    ;;
     esac
-    case $j in
-	1)
-	    MES="Gener"
-	    ;;
-	2)
-	    MES="Febrer"
-	    ;;
-	3)
-	    MES="Març"
-	    ;;
-	4)
-	    MES="Abril"
-	    ;;
-	5)
-	    MES="Maig"
-	    ;;
-	6)
-	    MES="Juny"
-	    ;;
-	7)
-	    MES="Juliol"
-	    ;;
-	8)
-	    MES="Agost"
-	    ;;
-	9)
-	    MES="Setembre"
-	    ;;
-	10)
-	    MES="Octubre"
-	    ;;
-	11)
-	    MES="Novembre"
-	    ;;
-	12)
-	    MES="Desembre"
-	    ;;
-    esac
+    MES=${MESOS[$j]}
     echo "\begin{tabular}{|c|c|c|c|c|c|c|}" >> $LATEX
     echo "\multicolumn{7}{c}{$MES}\\\ " >> $LATEX
     echo "\hline" >> $LATEX
-    echo "dl&dt&dc&dj&dv&ds&dg\\\ " >> $LATEX
+    echo "$FB dl&$FB dt&$FB dc&$FB dj&$FB dv&$FB ds&$FB dg\\\ " >> $LATEX
     echo "\hline" >> $LATEX
     echo "\hline" >> $LATEX
+    if [ $INI_NUM -gt 0 ] ; then
+	echo -n "$FB" >> $LATEX
+    fi   
     for i in $(seq 2 $INI_NUM) ; do
-	echo -ne "& " >> $LATEX
+	echo -n "&$FB " >> $LATEX
     done
     for i in $($CAL_CMD $j $ANY_P  | tail -n 6) ; do 
 	let AUX=$NUM+1
@@ -357,6 +346,8 @@ for j in $SEQ ; do
 	color=""
 	if [ $CCOLOR -eq 1 ] ; then
 	    color=$(color_festa $CONT $j $i $dia_mi $mes_mi $dia_mf $mes_mf $dia_pi $mes_pi $dia_pf $mes_pf)
+	else
+	    color="$FB"
 	fi
 	echo -n "$color" >> $LATEX
 	echo -ne "$i" >> $LATEX
@@ -369,7 +360,7 @@ for j in $SEQ ; do
     echo -ne "."
     if [ $CONT -ne 0 ] ; then
 	for i in $(seq $CONT 6) ; do
-	    echo -ne "& " >> $LATEX
+	    echo -n "&$FB " >> $LATEX
 	done
     echo "\\\ " >> $LATEX
     echo "\hline" >> $LATEX
@@ -411,78 +402,49 @@ for j in $SEQ ; do
 	    INI_NUM=6
 	    ;;
     esac
-    case $j in
-	1)
-	    MES="Gener"
-	    ;;
-	2)
-	    MES="Febrer"
-	    ;;
-	3)
-	    MES="Març"
-	    ;;
-	4)
-	    MES="Abril"
-	    ;;
-	5)
-	    MES="Maig"
-	    ;;
-	6)
-	    MES="Juny"
-	    ;;
-	7)
-	    MES="Juliol"
-	    ;;
-	8)
-	    MES="Agost"
-	    ;;
-	9)
-	    MES="Setembre"
-	    ;;
-	10)
-	    MES="Octubre"
-	    ;;
-	11)
-	    MES="Novembre"
-	    ;;
-	12)
-	    MES="Desembre"
-	    ;;
-    esac
+    MES=${MESOS[$j]}
+    if [ $CBACKG -eq 1 ] ; then
+	colbg=$(printf "%.2d" $j)
+	echo "\pagecolor{col$colbg}" >> $LATEX
+    fi
     echo "\begin{center}" >> $LATEX
     echo "{\huge \textbf{$MES $ANY_P}}" >> $LATEX
     echo "\end{center}" >> $LATEX
     echo "\\" >> $LATEX
     echo "\begin{center}" >> $LATEX
-    echo "\begin{tabular}{|*{7}{p{3.0cm}|}}" >> $LATEX
+    echo "\begin{tabular}{|*{7}{p{3.5cm}|}}" >> $LATEX
     echo "\hline" >> $LATEX
-    echo "\textbf{Dilluns}&\textbf{Dimarts}&\textbf{Dimecres}&\textbf{Dijous}&\textbf{Divendres}&\textbf{Dissabte}&\textbf{Diumenge}\\\ " >> $LATEX
+    echo "$FB\textbf{Dilluns}&$FB\textbf{Dimarts}&$FB\textbf{Dimecres}&$FB\textbf{Dijous}&$FB\textbf{Divendres}&$FB\textbf{Dissabte}&$FB\textbf{Diumenge}\\\ " >> $LATEX
     echo "\hline" >> $LATEX
     echo "\hline" >> $LATEX
+    if [ $INI_NUM -gt 0 ] ; then
+	echo -n "$FB" >> $LATEX
+    fi
     for i in $(seq 2 $INI_NUM) ; do
-	echo -ne "& " >> $LATEX
+	echo -n "&$FB" >> $LATEX
     done
-    COLORS=("" "" "" "" "" "" "")
+    COLORS=("$FB" "$FB" "$FB" "$FB" "$FB" "$FB" "$FB")
     for i in $($CAL_CMD $j $ANY_P | tail -n 6) ; do 
 	let AUX=$NUM+1
 	let AUX=$AUX+$INI_NUM
 	CONT=$(expr $AUX % 7)
 	if [ $CONT -ne 1 ] ; then
-	    echo -ne "&" >> $LATEX
+	    echo -n "&$FB" >> $LATEX
 	fi
 	color=""
 	if [ $CCOLOR -eq 1 ] ; then
 	    color=$(color_festa $CONT $j $i $dia_mi $mes_mi $dia_mf $mes_mf $dia_pi $mes_pi $dia_pf $mes_pf)
+	else
+	    color=$FB
 	fi
 	COLORS[$CONT]=$color
 	echo -n "$color" >> $LATEX
 	echo -n "\textbf{$i}" >> $LATEX
 	if [ $CONT -eq 0 ] ; then
 	    echo "\\\ " >> $LATEX
-	    echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	    echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	    echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	    echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
+	    for k in $(seq 1 5) ; do
+		echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
+	    done
 	    echo "\hline" >> $LATEX
 	fi
 	let NUM=$NUM+1
@@ -490,16 +452,15 @@ for j in $SEQ ; do
     echo -ne "."
     if [ $CONT -ne 0 ] ; then
 	for i in $(seq $CONT 6) ; do
-	    echo -ne "& " >> $LATEX
+	    echo -n "&$FB" >> $LATEX
 	    let ind=$i+1
-	    COLORS[$ind]=""
+	    COLORS[$ind]="$FB"
 	done
-	COLORS[0]=""
+	COLORS[0]="$FB"
 	echo "\\\ " >> $LATEX
-	echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
-	echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
+	for k in $(seq 1 5) ; do
+	    echo "${COLORS[1]}&${COLORS[2]} &${COLORS[3]} &${COLORS[4]} &${COLORS[5]} &${COLORS[6]} &${COLORS[0]}\\\ " >> $LATEX
+	done
 	echo "\hline" >> $LATEX
     fi
     echo "\end{tabular}" >> $LATEX
