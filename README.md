@@ -27,6 +27,8 @@ apt install gcc jhead mediainfo texlive-base python-requests python-html5lib pyt
 ```
 After, you can install all of these scripts and programs with:
 ```
+git clone https://github.com/cosmogat/bsk.git
+cd bsk
 sudo ./install.sh
 ```
 This last command install all of these scripts and programs in "/usr/local/bin" folder.
