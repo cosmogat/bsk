@@ -13,9 +13,10 @@ fi
 
 cd anuaris
 cp anuari.sh "$DESTI/anuari"
+cp professorat.sh "$DESTI/professorat"
 cd $DESTI
-chown root:staff anuari
-chmod 755 anuari
+chown root:staff anuari professorat
+chmod 755 anuari professorat
 cd $DIR
 
 cd genmake
