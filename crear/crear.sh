@@ -168,9 +168,9 @@ if [ $# -ne 0 ] ; then
 		    echo "\definecolor{cyan}{rgb}{0, 1, 1}" >> $i
 		    echo "\definecolor{ombra}{rgb}{0.95, 0.95, 1}" >> $i
 		    echo "\allowdisplaybreaks" >> $i
-		    echo "\title{$nom}"
-		    echo "\author{$jo}"
-		    echo "\date{$dataT}"
+		    echo "\title{$nom}" >> $i
+		    echo "\author{$jo}" >> $i
+		    echo "\date{$dataT}" >> $i
 		    echo "\makeindex" >> $i
 		    echo "\begin{document}" >> $i
 		    echo "\maketitle" >> $i
