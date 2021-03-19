@@ -1,7 +1,7 @@
 #!/bin/bash
 # genmake.sh: generador de makefiles
 # 01-05-2010
-# billy
+# alex
 
 dir=$PWD # Desem el directori actual
 bool=1   # Despres la gastarem per a vore si es latex
@@ -60,9 +60,9 @@ echo -n "# "
 date +%d-%m-%Y
 echo -n "# "
 jo=$(whoami)
-if [ $jo = "alex" ] ; then
-    jo="billy"
-fi
+# if [ $jo = "alex" ] ; then
+#     jo="billy"
+# fi
 echo "$jo"
 echo ""
 
@@ -121,28 +121,45 @@ if [ $bool -ne 0 ] ; then
 else
     # Es tracta de latex
     arxiu=$(basename $arxiu .$2)
+    echo "define esborrar"
+    echo -e '\trm -rf *~ *.aux *.auxlock *.log *.toc *.lof *.lot *.bbl *.blg *.idx *.ilg *.ind *.out tex/*~ tex/*.log 2> /dev/null'
+    echo "endef"
+    echo ""
+    echo "define esborrar_tot"
+    echo -e '\t$(call esborrar)'
+    echo -e '\trm -rf *.dvi *.pdf *.txt 2> /dev/null'
+    echo "endef"
+    echo ""
     echo "FITXER = $arxiu"
     echo "LATEX = latex"
     echo "PLATEX = pdflatex"
+    echo "BIBLTX = bibtex"
+    echo "INDLTX = makeindex"
     echo "PDF = dvipdft"
     echo "TXT = pdftotext"
     echo "HTML = latex2html"
     echo ""
     echo "pdf:"
+    echo -e '#\t$(PLATEX) $(FITXER).tex'
+    echo -e '#\t$(BIBLTX) $(FITXER)'
+    echo -e '#\t$(INDLTX) $(FITXER)'
     for i in $(seq 1 2) ; do
 	echo -e '\t$(PLATEX) $(FITXER).tex'
     done
-    echo -e '\trm -f $(FITXER).aux $(FITXER).log $(FITXER).toc $(FITXER).lof $(FITXER).lot $(FITXER).out 2> /dev/null'
+    echo -e "\t\$(call esborrar)"
     echo ""
     echo "pdf2: dvi"
     echo -e '\t$(PDF) $(FITXER).dvi'
     echo -e '\trm -f $(FITXER).dvi'
     echo ""
     echo "dvi:"
+    echo -e '#\t$(LATEX) $(FITXER).tex'
+    echo -e '#\t$(BIBLTX) $(FITXER)'
+    echo -e '#\t$(INDLTX) $(FITXER)'
     for i in $(seq 1 2) ; do
 	echo -e '\t$(LATEX) $(FITXER).tex'
     done
-    echo -e '\trm -f $(FITXER).aux $(FITXER).log $(FITXER).toc $(FITXER).lof $(FITXER).lot $(FITXER).out 2> /dev/null'
+    echo -e '\t$(call esborrar)'
     echo ""
     echo "txt: pdf"
     echo -e '\t$(TXT) $(FITXER).pdf'
@@ -153,7 +170,7 @@ else
     echo "all: txt html dvi"
     echo ""
     echo "clean:"
-    echo -e '\trm -rf $(FITXER) $(FITXER).dvi $(FITXER).pdf $(FITXER).txt $(FITXER) *~ 2> /dev/null'
+    echo -e '\t$(call esborrar_tot)'
 fi
 # Tornem al directori del principi
 cd "$dir"
