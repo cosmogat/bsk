@@ -1,9 +1,10 @@
 #!/bin/bash
 # 13-06-2010
-# billy
+# alex
 
 if [ $# -ne 0 ] ; then
     data=$(date +%d-%m-%Y)
+    dataT=$(date "+%d %b de %Y")
     jo=$(whoami)
     # if [ $jo = "alex" ] ; then
     # 	jo="billy"
@@ -111,12 +112,15 @@ if [ $# -ne 0 ] ; then
 		    echo "pause()" >> $i
 		    #chmod u+x $i
 		    ;;
-		*.gnuplot | *.plt | *.gpi)
+		*.plt)
+		    nom=$(basename $i .plt)
 		    echo "# $data" >> $i
 		    echo "# $jo" >> $i
 		    echo "# $i" >> $i
 		    echo "reset" >> $i
-		    echo "set term qt persist" >> $i
+		    echo "set term wxt persist" >> $i
+		    echo "# set term png" >> $i
+		    echo "# set output '$nom.png'" >> $i
 		    echo "set palette defined (0 '#000090', 1 '#000FFF', 2 '#0090FF', 3 '#0FFFEE', 4 '#90FF70', 5 '#FFEE00', 6 '#FF7000', 7 '#EE0000', 8 '#7F0000')" >> $i
 		    echo "# set grid" >> $i
 		    echo "set style line 1  lt rgb '#0060AD'" >> $i
@@ -131,6 +135,7 @@ if [ $# -ne 0 ] ; then
 		    echo "set style line 10 lt rgb '#F000F0'" >> $i 
 		    ;;
 		*.tex)
+		    nom=$(basename $i .tex)
 		    echo "% $data" >> $i
 		    echo "% $jo" >> $i
 		    echo "% $i" >> $i
@@ -144,10 +149,11 @@ if [ $# -ne 0 ] ; then
 		    echo "\usepackage{amssymb}" >> $i
 		    echo "\usepackage{amsmath}" >> $i
 		    echo "\usepackage{amsthm}" >> $i
-		    echo "\usepackage{color}" >> $i
+		    echo "\usepackage{color, colortbl}" >> $i
 		    echo "\usepackage[T1]{fontenc}" >> $i
 		    echo "\usepackage{listings}" >> $i
 		    echo "\usepackage{subfig}" >> $i
+		    echo "\usepackage[margin=1cm]{caption}" >> $i
 		    echo "\marginsize{2cm}{2cm}{2cm}{2cm}" >> $i
 		    echo "\ifpdf" >> $i
 		    echo "  \usepackage[pdftex]{graphicx}" >> $i
@@ -156,35 +162,18 @@ if [ $# -ne 0 ] ; then
 		    echo "  \usepackage[dvips]{graphicx}" >> $i
 		    echo "  \DeclareGraphicsExtensions{.eps}" >> $i
 		    echo "\fi" >> $i
-		    echo "\definecolor{gray97}{gray}{.97}" >> $i
-		    echo "\definecolor{gray75}{gray}{.75}" >> $i
-		    echo "\definecolor{gray45}{gray}{.45}" >> $i
-		    echo "\lstset{" >> $i
-		    echo "  framerule=0pt," >> $i
-		    echo "  aboveskip=0.5cm," >> $i
-		    echo "  framextopmargin=3pt," >> $i
-		    echo "  framexbottommargin=3pt," >> $i
-		    echo "  framexleftmargin=0.2cm," >> $i
-		    echo "  framesep=0pt," >> $i
-		    echo "  rulesep=.4pt," >> $i
-		    echo "  backgroundcolor=\color{gray97}," >> $i
-		    echo "  rulesepcolor=\color{black}," >> $i
-		    echo "  stringstyle=\ttfamily," >> $i
-		    echo "  showstringspaces = false," >> $i
-		    echo "  basicstyle=\scriptsize," >> $i
-		    echo "  commentstyle=\color{gray45}," >> $i
-		    echo "  keywordstyle=\bfseries," >> $i
-		    echo "  numbers=left," >> $i
-		    echo "  numbersep=15pt," >> $i
-		    echo "  numberstyle=\tiny," >> $i
-		    echo "  numberfirstline = false," >> $i
-		    echo "  breaklines=true," >> $i
-		    echo "}" >> $i
-		    echo "\lstnewenvironment{listing}[1][]" >> $i
-		    echo "{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}" >> $i
-		    echo "" >> $i
-		    echo "" >> $i
+		    echo "\definecolor{verd}{rgb}{0.7, 1, 0.5}" >> $i
+		    echo "\definecolor{groc}{rgb}{1, 1, 0.4}" >> $i
+		    echo "\definecolor{blau}{rgb}{0.2, 0.5, 1}" >> $i
+		    echo "\definecolor{cyan}{rgb}{0, 1, 1}" >> $i
+		    echo "\definecolor{ombra}{rgb}{0.95, 0.95, 1}" >> $i
+		    echo "\allowdisplaybreaks" >> $i
+		    echo "\title{$nom}"
+		    echo "\author{$jo}"
+		    echo "\date{$dataT}"
+		    echo "\makeindex" >> $i
 		    echo "\begin{document}" >> $i
+		    echo "\maketitle" >> $i
 		    echo "" >> $i
 		    echo "\end{document}" >> $i
 		    ;;
