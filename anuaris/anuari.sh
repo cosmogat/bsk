@@ -299,7 +299,8 @@ for j in $SEQ ; do
     if [ $CESCOL -eq 1 ] && [ $j -le 8 ] ; then
 	let ANY_P=$ANY+1
     fi
-    INI=$(date -d "$ANY_P-$j-01" | cut -f 1 -d' ' | cut -f 1 -d'.')
+    # INI=$(date -d "$ANY_P-$j-01" | cut -f 1 -d' ' | cut -f 1 -d'.')
+    INI=$(date -d "$ANY_P-$j-01" +"%a" | cut -f 1 -d'.')
     case $INI in
 	dl)
 	    INI_NUM=0
@@ -378,7 +379,8 @@ for j in $SEQ ; do
     if [ $CESCOL -eq 1 ] && [ $j -le 8 ] ; then
 	let ANY_P=$ANY+1
     fi
-    INI=$(date -d "$ANY_P-$j-01" | cut -f 1 -d' ' | cut -f 1 -d'.')
+    # INI=$(date -d "$ANY_P-$j-01" | cut -f 1 -d' ' | cut -f 1 -d'.')
+    INI=$(date -d "$ANY_P-$j-01" +"%a" | cut -f 1 -d'.')
     case $INI  in
 	dl)
 	    INI_NUM=0
